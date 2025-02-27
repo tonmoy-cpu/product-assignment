@@ -10,12 +10,14 @@ import {
   CogIcon,
   Bars3Icon,
   XMarkIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  UserCircleIcon
 } from '@heroicons/react/24/outline';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState('');
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem('user'));
@@ -132,14 +134,56 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6">
+          <div className="hidden md:flex items-center space-x-4">
+            <div className="relative">
               <button
-                onClick={handleLogout}
-                className="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary transition-colors duration-200"
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="flex items-center space-x-3 focus:outline-none"
               >
-                Logout
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                  {user?.profileImage ? (
+                    <img 
+                      src={user.profileImage} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <UserCircleIcon className="w-8 h-8 text-gray-500" />
+                  )}
+                </div>
+                <span className="text-sm font-medium text-gray-700">{user?.name || 'User'}</span>
               </button>
+
+              {/* Profile Dropdown */}
+              <Transition
+                show={showProfileMenu}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+                className="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
+              >
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Your Profile
+                </Link>
+                <Link
+                  to="/settings"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Settings
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+              </Transition>
             </div>
           </div>
 
@@ -213,11 +257,33 @@ const Navbar = () => {
               </div>
             ))}
             <button
-              onClick={handleLogout}
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
               className="w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-md"
             >
-              Logout
+              Profile
             </button>
+            {showProfileMenu && (
+              <div className="pl-4">
+                <Link
+                  to="/profile"
+                  className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-primary hover:bg-gray-50 rounded-md"
+                >
+                  Your Profile
+                </Link>
+                <Link
+                  to="/settings"
+                  className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-primary hover:bg-gray-50 rounded-md"
+                >
+                  Settings
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-3 py-2 text-base font-medium text-gray-500 hover:text-primary hover:bg-gray-50 rounded-md"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </Transition>

@@ -11,12 +11,20 @@ dotenv.config();
 const app = express();
 
 // Middleware
+// CORS configuration
 app.use(cors({
     origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
+
+// Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Make uploads directory static
+app.use('/uploads', express.static('uploads'));
 
 // MongoDB Connection
 mongoose.connect('mongodb+srv://inspiredgrow:pPM0ggZq2cJ8GV39@cluster0.cfzsy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
