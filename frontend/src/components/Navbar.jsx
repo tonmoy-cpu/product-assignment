@@ -81,7 +81,6 @@ const Navbar = () => {
                 <span>POS</span>
               </Link>
 
-              {/* Desktop menu */}
               <div className="hidden md:block ml-10">
                 <div className="flex items-center space-x-4">
                   {menuItems.map((item) => (
@@ -153,7 +152,6 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Mobile menu button */}
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
@@ -170,7 +168,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile menu */}
         <Transition
           show={isOpen}
           enter="transition ease-out duration-100 transform"
@@ -210,12 +207,43 @@ const Navbar = () => {
                   )}
                 </div>
               ))}
+              <div className="profile-menu-mobile">
+                <button
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  className="profile-button w-full text-gray-700 hover:text-primary"
+                >
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
+                    {user?.profileImage ? (
+                      <img 
+                        src={user.profileImage} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <UserCircleIcon className="w-8 h-8 text-gray-700" />
+                    )}
+                  </div>
+                  <span>{user?.name || 'User'}</span>
+                  <ChevronDownIcon className="ml-1 h-4 w-4" />
+                </button>
+
+                <div className={`profile-dropdown ${showProfileMenu ? 'show' : ''}`}>
+                  <Link to="/profile" className="profile-dropdown-item">
+                    Your Profile
+                  </Link>
+                  <Link to="/settings" className="profile-dropdown-item">
+                    Settings
+                  </Link>
+                  <button onClick={handleLogout} className="profile-dropdown-item">
+                    Logout
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </Transition>
       </nav>
       <div className="main-content">
-        {/* Your existing content */}
       </div>
     </>
   );

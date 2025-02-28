@@ -31,7 +31,7 @@ const SupplierList = () => {
     try {
       await axios.delete(`http://localhost:5000/api/suppliers/${id}`);
       toast.success('Supplier deleted successfully');
-      fetchSuppliers(); // Refresh the list after deletion
+      fetchSuppliers();
     } catch (error) {
       console.error('Delete error:', error);
       toast.error(error.response?.data?.message || 'Failed to delete supplier');
