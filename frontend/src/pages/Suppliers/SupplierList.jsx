@@ -31,7 +31,7 @@ const SupplierList = () => {
     try {
       await axios.delete(`http://localhost:5000/api/suppliers/${id}`);
       toast.success('Supplier deleted successfully');
-      setSuppliers(suppliers.filter(supplier => supplier._id !== id));
+      fetchSuppliers(); // Refresh the list after deletion
     } catch (error) {
       console.error('Delete error:', error);
       toast.error(error.response?.data?.message || 'Failed to delete supplier');
@@ -80,45 +80,43 @@ const SupplierList = () => {
               />
             </svg>
           </div>
-          <Link to="/suppliers/add" className="primary-button">
-            Add New Supplier
-          </Link>
+          <div className="flex space-x-4">
+            <Link to="/suppliers/import" className="secondary-button">
+              Import Suppliers
+            </Link>
+            <Link to="/suppliers/add" className="primary-button">
+              Add New Supplier
+            </Link>
+          </div>
         </div>
 
         <table className="data-table">
           <thead className="table-header">
             <tr>
               <th>Company Name</th>
+              <th>Mobile</th>
               <th>Email</th>
               <th>Phone</th>
-              <th>Address</th>
-              <th>City</th>
+              <th>GST Number</th>
               <th>State</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {suppliers.map((supplier) => (
               <tr key={supplier._id} className="table-row">
-                <td>{supplier.name}</td>
+                <td>{supplier.company}</td>
+                <td>{supplier.mobile}</td>
                 <td>{supplier.email}</td>
                 <td>{supplier.phone}</td>
-                <td>
-                  {supplier.address.includes('http') ? (
-                    <a 
-                      href={supplier.address} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-primary hover:text-primary-dark"
-                    >
-                      View Location
-                    </a>
-                  ) : (
-                    supplier.address
-                  )}
-                </td>
-                <td>{supplier.city}</td>
+                <td>{supplier.gstNumber}</td>
                 <td>{supplier.state}</td>
+                <td>
+                  <span className={`status-badge ${supplier.status}`}>
+                    {supplier.status}
+                  </span>
+                </td>
                 <td>
                   <div className="flex space-x-3">
                     <Link
@@ -140,17 +138,11 @@ const SupplierList = () => {
           </tbody>
         </table>
 
-        <div className="p-4 flex items-center justify-between border-t border-gray-200">
-          <div className="text-sm text-gray-700">
-            Showing <span className="font-medium">1</span> to{' '}
-            <span className="font-medium">10</span> of{' '}
-            <span className="font-medium">20</span> results
+        {suppliers.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            No suppliers found. Add a new supplier to get started.
           </div>
-          <div className="flex space-x-2">
-            <button className="secondary-button">Previous</button>
-            <button className="primary-button">Next</button>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -7,12 +7,16 @@ import { BuildingOfficeIcon } from '@heroicons/react/24/outline';
 const AddSupplier = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
+    company: '',
+    mobile: '',
     email: '',
     phone: '',
-    address: '',
-    city: '',
+    gstNumber: '',
+    taxNumber: '',
     state: '',
+    postcode: '',
+    address: '',
+    openingBalance: 0,
     status: 'active'
   });
 
@@ -50,8 +54,19 @@ const AddSupplier = () => {
             <input
               type="text"
               className="form-input"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={formData.company}
+              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Mobile</label>
+            <input
+              type="tel"
+              className="form-input"
+              value={formData.mobile}
+              onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
               required
             />
           </div>
@@ -79,23 +94,23 @@ const AddSupplier = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Address</label>
-            <textarea
-              className="form-input"
-              rows="3"
-              value={formData.address}
-              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              required
-            ></textarea>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">City</label>
+            <label className="form-label">GST Number</label>
             <input
               type="text"
               className="form-input"
-              value={formData.city}
-              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+              value={formData.gstNumber}
+              onChange={(e) => setFormData({ ...formData, gstNumber: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Tax Number</label>
+            <input
+              type="text"
+              className="form-input"
+              value={formData.taxNumber}
+              onChange={(e) => setFormData({ ...formData, taxNumber: e.target.value })}
               required
             />
           </div>
@@ -112,6 +127,38 @@ const AddSupplier = () => {
           </div>
 
           <div className="form-group">
+            <label className="form-label">Postcode</label>
+            <input
+              type="text"
+              className="form-input"
+              value={formData.postcode}
+              onChange={(e) => setFormData({ ...formData, postcode: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Address</label>
+            <textarea
+              className="form-input"
+              rows="3"
+              value={formData.address}
+              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+              required
+            ></textarea>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Opening Balance</label>
+            <input
+              type="number"
+              className="form-input"
+              value={formData.openingBalance}
+              onChange={(e) => setFormData({ ...formData, openingBalance: parseFloat(e.target.value) || 0 })}
+            />
+          </div>
+
+          <div className="form-group">
             <label className="form-label">Status</label>
             <select
               className="form-select"
@@ -120,7 +167,6 @@ const AddSupplier = () => {
             >
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
-              <option value="pending">Pending</option>
             </select>
           </div>
 

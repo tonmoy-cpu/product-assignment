@@ -5,16 +5,20 @@ const dotenv = require('dotenv');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 dotenv.config();
 
 const app = express();
 
+// Import routes
+const supplierRoutes = require('./routes/supplierRoutes');
+
 // Middleware
 // CORS configuration
 app.use(cors({
     origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
@@ -25,6 +29,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Make uploads directory static
 app.use('/uploads', express.static('uploads'));
+
+// Create uploads directory if it doesn't exist
+if (!fs.existsSync('uploads')) {
+    fs.mkdirSync('uploads');
+}
 
 // MongoDB Connection
 mongoose.connect('mongodb+srv://inspiredgrow:pPM0ggZq2cJ8GV39@cluster0.cfzsy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
@@ -113,9 +122,9 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// Routes
+// Use routes
+app.use('/api/suppliers', supplierRoutes);
 app.use('/api/customers', require('./routes/customerRoutes'));
-app.use('/api/suppliers', require('./routes/supplierRoutes'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

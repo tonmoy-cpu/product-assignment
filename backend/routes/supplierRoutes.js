@@ -6,7 +6,16 @@ const csv = require('csv-parser');
 const fs = require('fs');
 
 // Configure multer for file upload
-const upload = multer({ dest: 'uploads/' });
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+});
+
+const upload = multer({ storage: storage });
 
 // Get all suppliers
 router.get('/', async (req, res) => {
@@ -20,8 +29,22 @@ router.get('/', async (req, res) => {
 
 // Add new supplier
 router.post('/', async (req, res) => {
-    const supplier = new Supplier(req.body);
     try {
+        const supplierData = {
+            company: req.body['SUPPLIER NAME'] || req.body.company,
+            mobile: req.body['MOBILE'] || req.body.mobile,
+            email: req.body['EMAIL'] || req.body.email,
+            phone: req.body['PHONE'] || req.body.phone,
+            gstNumber: req.body['GST NUMBER'] || req.body.gstNumber,
+            taxNumber: req.body['TAX NUMBER'] || req.body.taxNumber,
+            state: req.body['COUNTRY/STATE'] || req.body.state,
+            postcode: req.body['POSTCODE'] || req.body.postcode,
+            address: req.body['ADDRESS'] || req.body.address,
+            openingBalance: parseFloat(req.body['OPENING BALANCE']) || req.body.openingBalance || 0,
+            status: 'active'
+        };
+
+        const supplier = new Supplier(supplierData);
         const newSupplier = await supplier.save();
         res.status(201).json(newSupplier);
     } catch (error) {
@@ -31,64 +54,90 @@ router.post('/', async (req, res) => {
 
 // Import suppliers from CSV
 router.post('/import', upload.single('file'), async (req, res) => {
+    console.log('Import request received');
+    
     if (!req.file) {
         return res.status(400).json({ message: 'No file uploaded' });
     }
 
+    console.log('File received:', req.file);
     const results = [];
+    let rowCount = 0;
     
     fs.createReadStream(req.file.path)
-        .pipe(csv())
+        .pipe(csv({
+            mapHeaders: ({ header }) => header.trim()
+        }))
         .on('data', (data) => {
+            rowCount++;
+            console.log('Processing row', rowCount, ':', data);
+            
             // Map CSV data to match the schema
             const supplier = {
-                name: data['SUPPLIER NAME'] || data['CUSTOMER NAME'] || data.name || '',
-                email: data.EMAIL || data.email || '',
-                phone: data.MOBILE || data.PHONE || data.phone || '',
-                // Extract address from LOCATION LINK
-                address: data['ADDRESS/LOCATION LINK'] || data.address || '',
-                city: data.CITY || data['COUNTRY/STATE'] || data.city || 'Bangalore',
-                state: data['COUNTRY/STATE'] || data.state || 'Karnataka',
+                company: data['SUPPLIER NAME'] || '',
+                mobile: data['MOBILE'] || '',
+                email: data['EMAIL'] || '',
+                phone: data['PHONE'] || '',
+                gstNumber: data['GST NUMBER'] || '',
+                taxNumber: data['TAX NUMBER'] || '',
+                state: data['COUNTRY/STATE'] || '',
+                postcode: data['POSTCODE'] || '',
+                address: data['ADDRESS'] || '',
+                openingBalance: parseFloat(data['OPENING BALANCE']) || 0,
                 status: 'active'
             };
             
+            console.log('Mapped supplier data:', supplier);
+            
             // Validate required fields
-            if (supplier.name && supplier.email && supplier.phone) {
-                // If address is a Google Maps link, use it as is
-                if (supplier.address.includes('google.com')) {
-                    results.push(supplier);
-                } else {
-                    // If no Google Maps link, construct a basic address
-                    supplier.address = supplier.address || `${supplier.city}, ${supplier.state}`;
-                    results.push(supplier);
-                }
+            const requiredFields = ['company', 'mobile', 'email', 'phone', 'gstNumber', 'taxNumber', 'state', 'postcode', 'address'];
+            const missingFields = requiredFields.filter(field => !supplier[field]);
+            
+            if (missingFields.length === 0) {
+                results.push(supplier);
+            } else {
+                console.log(`Row ${rowCount} missing required fields:`, missingFields);
+                console.log('Row data:', data);
             }
         })
         .on('end', async () => {
             try {
+                console.log(`Processed ${rowCount} rows, found ${results.length} valid suppliers`);
+                
                 if (results.length === 0) {
-                    fs.unlinkSync(req.file.path); // Clean up uploaded file
+                    console.log('No valid supplier data found');
+                    fs.unlinkSync(req.file.path);
                     return res.status(400).json({ 
-                        message: 'No valid supplier data found in CSV. Please ensure all required fields are present: SUPPLIER NAME/CUSTOMER NAME, EMAIL, MOBILE/PHONE' 
+                        message: `No valid supplier data found in CSV. Please ensure all required fields are present. Required fields: SUPPLIER NAME, MOBILE, EMAIL, PHONE, GST NUMBER, TAX NUMBER, COUNTRY/STATE, POSTCODE, ADDRESS` 
                     });
                 }
 
+                console.log('Attempting to insert suppliers:', results);
                 const suppliers = await Supplier.insertMany(results);
-                fs.unlinkSync(req.file.path); // Clean up uploaded file
+                fs.unlinkSync(req.file.path);
                 res.json({ 
                     message: `Successfully imported ${suppliers.length} suppliers`,
                     suppliers 
                 });
             } catch (error) {
-                // Clean up uploaded file
+                console.error('Error during import:', error);
                 if (fs.existsSync(req.file.path)) {
                     fs.unlinkSync(req.file.path);
                 }
                 res.status(400).json({ 
                     message: 'Error importing suppliers: ' + error.message,
-                    details: 'Please ensure your CSV file has the correct column names: SUPPLIER NAME/CUSTOMER NAME, EMAIL, MOBILE/PHONE'
+                    error: error
                 });
             }
+        })
+        .on('error', (error) => {
+            console.error('CSV parsing error:', error);
+            if (fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path);
+            }
+            res.status(400).json({ 
+                message: 'Error parsing CSV file: ' + error.message 
+            });
         });
 });
 

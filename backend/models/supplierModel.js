@@ -1,20 +1,35 @@
 const mongoose = require('mongoose');
 
 const supplierSchema = new mongoose.Schema({
-    name: {
+    company: {
+        type: String,
+        required: true
+    },
+    mobile: {
         type: String,
         required: true
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     phone: {
         type: String,
         required: true
     },
-    company: {
+    gstNumber: {
+        type: String,
+        required: true
+    },
+    taxNumber: {
+        type: String,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    postcode: {
         type: String,
         required: true
     },
@@ -22,13 +37,9 @@ const supplierSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    city: {
-        type: String,
-        required: true
-    },
-    state: {
-        type: String,
-        required: true
+    openingBalance: {
+        type: Number,
+        default: 0
     },
     status: {
         type: String,
