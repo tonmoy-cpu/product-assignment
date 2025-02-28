@@ -78,7 +78,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <Link to="/dashboard" className="navbar-brand">
-                <span>POS System</span>
+                <span>POS</span>
               </Link>
 
               {/* Desktop menu */}

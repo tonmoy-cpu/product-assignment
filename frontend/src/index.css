@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-    --primary-color: #1a73e8;
-    --secondary-color: #4285f4;
+    --primary-color: #3b82f6;
+    --secondary-color: #60a5fa;
     --accent-color: #34a853;
     --background-color: #f0f2f5;
     --text-primary: #202124;
     --text-secondary: #5f6368;
-    --purple-card: #9c27b0;
-    --red-card: #f44336;
-    --green-card: #2196f3;
-    --blue-card: #3f51b5;
+    --purple-card: #581c87;
+    --red-card: #991b1b;
+    --green-card: #1e3a8a;
+    --blue-card: #1e3a8a;
   }
 
   body {
@@ -36,19 +36,19 @@
   }
 
   .purchase-due-card {
-    @apply bg-gradient-to-br from-[#9c27b0] to-[#d559e5];
+    @apply bg-gradient-to-br from-[#581c87] to-[#7e22ce];
   }
 
   .sales-due-card {
-    @apply bg-gradient-to-br from-[#f44336] to-[#ff7961];
+    @apply bg-gradient-to-br from-[#991b1b] to-[#dc2626];
   }
 
   .sales-card {
-    @apply bg-gradient-to-br from-[#2196f3] to-[#64b5f6];
+    @apply bg-gradient-to-br from-[#1e3a8a] to-[#2563eb];
   }
 
   .expense-card {
-    @apply bg-gradient-to-br from-[#3f51b5] to-[#7986cb];
+    @apply bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6];
   }
 
   /* Stats Cards */
@@ -61,19 +61,19 @@
   }
 
   .customers-icon {
-    @apply bg-gradient-to-br from-[#9c27b0] to-[#d559e5];
+    @apply bg-gradient-to-br from-[#581c87] to-[#7e22ce];
   }
 
   .suppliers-icon {
-    @apply bg-gradient-to-br from-[#f44336] to-[#ff7961];
+    @apply bg-gradient-to-br from-[#991b1b] to-[#dc2626];
   }
 
   .purchases-icon {
-    @apply bg-gradient-to-br from-[#2196f3] to-[#64b5f6];
+    @apply bg-gradient-to-br from-[#1e3a8a] to-[#2563eb];
   }
 
   .invoices-icon {
-    @apply bg-gradient-to-br from-[#3f51b5] to-[#7986cb];
+    @apply bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6];
   }
 
   /* Navigation */
@@ -82,22 +82,22 @@
   }
 
   .sidebar-link {
-    @apply flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-primary transition-all duration-200 relative;
+    @apply flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-[#3b82f6] transition-all duration-200 relative;
   }
 
   .sidebar-link.active {
-    @apply text-primary bg-blue-50 font-medium;
+    @apply text-[#3b82f6] bg-blue-50 font-medium;
   }
 
   .sidebar-link.active::before {
-    @apply content-[''] absolute left-0 top-0 bottom-0 w-1 bg-primary;
+    @apply content-[''] absolute left-0 top-0 bottom-0 w-1 bg-[#3b82f6];
   }
 
   /* Navbar and Dropdown Styles */
   .navbar {
-    @apply fixed top-0 left-0 right-0 bg-gradient-to-r from-[#1a237e] via-[#1565c0] to-[#0288d1] shadow-lg z-50;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    @apply fixed top-0 left-0 right-0 bg-[#1e3a8a]/90 shadow-lg z-50;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .navbar-brand {
@@ -146,7 +146,7 @@
   }
 
   .nav-dropdown-item {
-    @apply block w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary transition-all duration-200 text-left first:rounded-t-md last:rounded-b-md;
+    @apply block w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#1e3a8a] transition-all duration-200 text-left first:rounded-t-md last:rounded-b-md;
   }
 
   /* Profile Menu */
@@ -175,7 +175,7 @@
   }
 
   .profile-dropdown-item {
-    @apply block w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary transition-all duration-200 text-left first:rounded-t-md last:rounded-b-md;
+    @apply block w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#1e3a8a] transition-all duration-200 text-left first:rounded-t-md last:rounded-b-md;
   }
 
   /* Mobile Menu Button */
@@ -201,12 +201,8 @@
     @apply px-4 py-2 rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-md;
   }
   
-  .btn-primary {
-    @apply bg-gradient-to-r from-[#1a73e8] to-[#4285f4] text-white hover:from-[#1557b0] hover:to-[#3367d6];
-  }
-  
   .btn-secondary {
-    @apply bg-gradient-to-r from-[#4285f4] to-[#64b5f6] text-white hover:from-[#3367d6] hover:to-[#5a9de9];
+    @apply bg-gradient-to-r from-[#1e3a8a] to-[#2563eb] text-white hover:from-[#1e40af] hover:to-[#3b82f6];
   }
 
   /* Table Styles */
@@ -263,7 +259,7 @@
 
   /* Loading Animation */
   .loading {
-    @apply animate-spin rounded-full border-t-2 border-b-2 border-[#1a73e8] h-5 w-5;
+    @apply animate-spin rounded-full border-t-2 border-b-2 border-[#1e3a8a] h-5 w-5;
   }
 
   /* Toast Notifications */
@@ -290,17 +286,15 @@
 
   /* Page Headers and Cards */
   .page-header {
-    @apply mb-6 p-6 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg shadow-lg;
-    animation: gradientShift 8s ease infinite;
+    @apply bg-[#3b82f6] text-white p-6 rounded-lg shadow-lg mb-6;
   }
 
   .page-header h1 {
-    @apply text-2xl font-bold text-white mb-2;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    @apply text-2xl font-semibold;
   }
 
   .page-header p {
-    @apply text-white/90;
+    @apply text-blue-100;
   }
 
   .content-card {
@@ -309,7 +303,7 @@
   }
 
   .form-card {
-    @apply bg-gradient-to-br from-white via-white to-blue-50 rounded-lg shadow-lg p-6;
+    @apply bg-gradient-to-br from-white via-white to-[#1e3a8a] rounded-lg shadow-lg p-6;
     animation: fadeInUp 0.5s ease-out;
   }
 
@@ -324,11 +318,11 @@
   }
 
   .form-input {
-    @apply w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200;
+    @apply w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-all duration-200;
   }
 
   .form-select {
-    @apply w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200;
+    @apply w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-all duration-200;
   }
 
   /* Table Styles */
@@ -342,11 +336,11 @@
   }
 
   .table-header {
-    @apply bg-gradient-to-r from-gray-50 to-blue-50;
+    @apply bg-[#3b82f6] text-white;
   }
 
   .table-header th {
-    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+    @apply px-6 py-3 text-left text-xs font-medium uppercase tracking-wider;
   }
 
   .table-row {
@@ -359,11 +353,11 @@
 
   /* Buttons */
   .primary-button {
-    @apply px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-md shadow-md hover:shadow-lg transition-all duration-200;
+    @apply px-4 py-2 bg-gradient-to-r from-[#1e3a8a] to-[#2563eb] text-white rounded-md shadow-md hover:shadow-lg transition-all duration-200;
   }
 
   .secondary-button {
-    @apply px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-md shadow-md hover:shadow-lg transition-all duration-200;
+    @apply px-4 py-2 bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white rounded-md shadow-md hover:shadow-lg transition-all duration-200;
   }
 
   .success-button {
@@ -372,13 +366,36 @@
 
   /* Import Section */
   .import-section {
-    @apply relative p-6 border-2 border-dashed border-blue-300 rounded-lg bg-blue-50/50 backdrop-blur-sm;
+    @apply relative p-6 border-2 border-dashed border-[#1e3a8a] rounded-lg bg-[#1e3a8a]/50 backdrop-blur-sm;
     animation: pulse 2s infinite;
   }
 
   .import-icon {
-    @apply mx-auto h-12 w-12 text-blue-500 mb-4;
+    @apply mx-auto h-12 w-12 text-[#1e3a8a] mb-4;
     animation: bounce 1s infinite;
+  }
+
+  /* Form Styles */
+  .form-section {
+    @apply bg-[#3b82f6]/10 rounded-lg p-6 mb-6;
+  }
+
+  .form-header {
+    @apply text-[#3b82f6] text-xl font-semibold mb-4;
+  }
+
+  /* CSV Upload Section */
+  .csv-upload-section {
+    @apply bg-[#3b82f6]/10 p-6 rounded-lg border-2 border-dashed border-[#3b82f6] text-center;
+  }
+
+  .csv-upload-text {
+    @apply text-[#3b82f6] font-medium;
+  }
+
+  /* Action Buttons */
+  .action-icon {
+    @apply text-[#3b82f6] hover:text-[#60a5fa] transition-colors duration-200;
   }
 
   /* Animations */

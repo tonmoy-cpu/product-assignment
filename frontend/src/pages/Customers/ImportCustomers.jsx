@@ -77,7 +77,7 @@ const ImportCustomers = () => {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto">
+      <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="content-card mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Required CSV Format</h2>
           <ul className="space-y-2 text-gray-600">
@@ -109,7 +109,9 @@ const ImportCustomers = () => {
         </div>
 
         <div
-          className={`import-section ${isDragging ? 'border-blue-500 bg-blue-100/50' : ''}`}
+          className={`csv-upload-section ${
+            isDragging ? 'border-[#60a5fa]' : ''
+          }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
